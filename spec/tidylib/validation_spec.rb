@@ -65,5 +65,22 @@ describe Tidylib::Validation do
 
       expect(validator.valid?).to be_falsey
     end
+
+    it "clears the errors before runnign validation" do
+      validator_class = Class.new do
+        include Tidylib::Validation
+
+        validate :foo_bar
+
+        def foo_bar
+          errors.add(:foo, :bar)
+        end
+      end
+
+      validator = validator_class.new
+      validator.valid?
+      validator.valid?
+      expect(validator.errors.count).to eq(1)
+    end
   end
 end

@@ -9,6 +9,8 @@ module Tidylib
     end
 
     def valid?
+      errors.clear
+
       validation_rules.each do |validation_rule|
         self.send(validation_rule)
       end
