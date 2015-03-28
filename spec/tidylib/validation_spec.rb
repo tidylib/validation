@@ -87,7 +87,7 @@ describe Tidylib::Validation do
       validator_class = Class.new do
         include Tidylib::Validation
 
-        validates :foo, presence: true
+        validates_presence_of :foo
 
         def foo; end
       end
@@ -97,6 +97,24 @@ describe Tidylib::Validation do
       expect(validator.valid?).to be_falsey
 
       expect(validator.errors.on(:foo)).to eq([ [:blank, {} ] ])
+    end
+
+    it "implements length validation dsl" do
+      validator_class = Class.new do
+        include Tidylib::Validation
+
+        validates_length_of :foo, maximum: 4, minimum: 2
+
+        def foo; [1]; end
+      end
+
+      validator = validator_class.new
+      expect(validator.valid?).to be_falsey
+      error = [
+        :too_short,
+        { maximum: 4, minimum: 2, length: 1 }
+      ]
+      expect(validator.errors.on(:foo)).to eq([ error ])
     end
   end
 end

@@ -1,4 +1,5 @@
-require 'tidylib/validation/property_validator'
+require 'tidylib/validation/presence_validator'
+require 'tidylib/validation/length_validator'
 
 module Tidylib
   module Validation
@@ -15,8 +16,12 @@ module Tidylib
         custom_validations << method_name
       end
 
-      def validates(property, options)
-        property_validations << PropertyValidator.new(property, options)
+      def validates_presence_of(property_name)
+        property_validations << PresenceValidator.new(property_name)
+      end
+
+      def validates_length_of(property_name, options)
+        property_validations << LengthValidator.new(property_name, options)
       end
     end
   end
