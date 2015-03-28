@@ -82,5 +82,21 @@ describe Tidylib::Validation do
       validator.valid?
       expect(validator.errors.count).to eq(1)
     end
+
+    it "implements presence dsl validation" do
+      validator_class = Class.new do
+        include Tidylib::Validation
+
+        validates :foo, presence: true
+
+        def foo; end
+      end
+
+      validator = validator_class.new
+
+      expect(validator.valid?).to be_falsey
+
+      expect(validator.errors.on(:foo)).to eq([ [:blank, {} ] ])
+    end
   end
 end
