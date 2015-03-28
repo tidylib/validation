@@ -11,7 +11,7 @@ module Tidylib
     def valid?
       errors.clear
 
-      validation_rules.each do |validation_rule|
+      custom_validations.each do |validation_rule|
         self.send(validation_rule)
       end
 
@@ -27,8 +27,8 @@ module Tidylib
       errors.empty?
     end
 
-    def validation_rules
-      self.class.validation_rules
+    def custom_validations
+      self.class.custom_validations
     end
 
     def property_validations

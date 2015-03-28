@@ -3,8 +3,8 @@ require 'tidylib/validation/property_validator'
 module Tidylib
   module Validation
     module DSL
-      def validation_rules
-        @validation_rules ||= []
+      def custom_validations
+        @custom_validations ||= []
       end
 
       def property_validations
@@ -12,7 +12,7 @@ module Tidylib
       end
 
       def validate(method_name)
-        validation_rules << method_name
+        custom_validations << method_name
       end
 
       def validates(property, options)
