@@ -20,21 +20,21 @@ describe Tidylib::Validation do
         end
 
         def foo_bar
-          @object.send(:invoked_foo_bar)
+          errors.add(:foo_bar, :blank)
         end
 
         def baz_hoo
-          @object.send(:invoked_baz_hoo)
+          errors.add(:baz_hoo, :whatevs)
         end
       end
 
       object = double
       validator = validator_class.new(object)
 
-      expect(object).to receive(:invoked_foo_bar)
-      expect(object).to receive(:invoked_baz_hoo)
-
       validator.valid?
+
+      expect(validator.errors.on(:foo_bar)).to_not be_empty
+      expect(validator.errors.on(:baz_hoo)).to_not be_empty
     end
 
     it "returns true if there are no errors after applying validation rules" do

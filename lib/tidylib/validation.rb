@@ -10,9 +10,8 @@ module Tidylib
 
     def valid?
       errors.clear
-
       validation_rules.each do |validation_rule|
-        validation_rule.apply(self)
+        instance_eval(&validation_rule)
       end
 
       errors.empty?

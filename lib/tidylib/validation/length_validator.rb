@@ -1,27 +1,22 @@
 module Tidylib
   module Validation
     class LengthValidator
-      attr_reader :property_name
+      def self.for(property_name, options)
+        Proc.new do
+          value = send(property_name)
+          length = value.length
+          minimum = options[:minimum]
+          maximum = options[:maximum]
 
-      def initialize(property_name, options)
-        @property_name = property_name
-        @options = options
-        @minimum = @options[:minimum]
-        @maximum = @options[:maximum]
-      end
+          message = if minimum && length < minimum
+                      :too_short
+                    elsif maximum && length > maximum
+                      :too_long
+                    end
 
-      def apply(obj)
-        value = obj.send(@property_name)
-        length = value.length
-
-        message = if @minimum && length < @minimum
-                    :too_short
-                  elsif @maximum && length > @maximum
-                    :too_long
-                  end
-
-        if message
-          obj.errors.add @property_name, message, @options.merge(length: length)
+          if message
+            errors.add property_name, message, options.merge(length: length)
+          end
         end
       end
     end

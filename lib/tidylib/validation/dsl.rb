@@ -33,15 +33,15 @@ module Tidylib
       end
 
       def presence_of(property_name)
-        @rules << PresenceValidator.new(property_name)
+        @rules << PresenceValidator.for(property_name)
       end
 
       def length_of(property_name, options)
-        @rules << LengthValidator.new(property_name, options)
+        @rules << LengthValidator.for(property_name, options)
       end
 
       def method_missing(method_name, *args, &block)
-        @rules <<  Rule.new(method_name)
+        @rules << Proc.new { instance_eval &method_name }
       end
     end
   end
