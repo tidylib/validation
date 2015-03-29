@@ -6,7 +6,7 @@ module Tidylib
       end
 
       def apply(obj)
-        obj.send(@method_name)
+        obj.instance_eval(&@method_name)
       end
     end
   end
