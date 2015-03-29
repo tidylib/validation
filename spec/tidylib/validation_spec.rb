@@ -10,8 +10,10 @@ describe Tidylib::Validation do
       validator_class = Class.new do
         include Tidylib::Validation
 
-        validate :foo_bar
-        validate :baz_hoo
+        validate do
+          foo_bar
+          baz_hoo
+        end
 
         def initialize(obj)
           @object = obj
@@ -39,7 +41,9 @@ describe Tidylib::Validation do
       validator_class = Class.new do
         include Tidylib::Validation
 
-        validate :foo_bar
+        validate do
+          foo_bar
+        end
 
         def foo_bar
         end
@@ -54,7 +58,9 @@ describe Tidylib::Validation do
       validator_class = Class.new do
         include Tidylib::Validation
 
-        validate :foo_bar
+        validate do
+          foo_bar
+        end
 
         def foo_bar
           errors.add(:foo, :bar)
@@ -70,7 +76,9 @@ describe Tidylib::Validation do
       validator_class = Class.new do
         include Tidylib::Validation
 
-        validate :foo_bar
+        validate do
+          foo_bar
+        end
 
         def foo_bar
           errors.add(:foo, :bar)
@@ -87,7 +95,9 @@ describe Tidylib::Validation do
       validator_class = Class.new do
         include Tidylib::Validation
 
-        validates_presence_of :foo
+        validate do
+          presence_of :foo
+        end
 
         def foo; end
       end
@@ -103,7 +113,9 @@ describe Tidylib::Validation do
       validator_class = Class.new do
         include Tidylib::Validation
 
-        validates_length_of :foo, maximum: 4, minimum: 2
+        validate do
+          length_of :foo, maximum: 4, minimum: 2
+        end
 
         def foo; [1]; end
       end
