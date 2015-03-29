@@ -10,7 +10,8 @@ module Tidylib
         @maximum = @options[:maximum]
       end
 
-      def error_for(value)
+      def apply(obj)
+        value = obj.send(@property_name)
         length = value.length
 
         message = if @minimum && length < @minimum
@@ -20,7 +21,7 @@ module Tidylib
                   end
 
         if message
-          [ @property_name, message, @options.merge(length: length) ]
+          obj.errors.add @property_name, message, @options.merge(length: length)
         end
       end
     end

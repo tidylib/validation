@@ -1,15 +1,14 @@
 module Tidylib
   module Validation
     class PresenceValidator
-      attr_reader :property_name
-
       def initialize(property_name)
         @property_name = property_name
       end
 
-      def error_for(value)
+      def apply(obj)
+        value = obj.send(@property_name)
         if value.nil? || value.empty?
-          [@property_name, :blank]
+          obj.errors.add @property_name, :blank
         end
       end
     end
