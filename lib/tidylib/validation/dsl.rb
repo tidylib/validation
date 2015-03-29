@@ -6,19 +6,11 @@ module Tidylib
   module Validation
     module DSL
       def validation_rules
-        @validation_rules ||= []
+        @validation_rules ||= RulesGenerator.new(@validation_block).generate
       end
 
       def validate(&block)
-        @validation_rules = generate_rules(block)
-      end
-
-      # def validate(method_name)
-        # validation_rules << Rule.new(method_name)
-      # end
-
-      def generate_rules(block)
-        RulesGenerator.new(block).generate
+        @validation_block = block
       end
     end
 
@@ -30,6 +22,8 @@ module Tidylib
 
       def generate
         self.instance_eval(&@validation_block)
+
+        @rules
       end
 
       def presence_of(property_name)
@@ -41,7 +35,7 @@ module Tidylib
       end
 
       def method_missing(method_name, *args, &block)
-        @rules << Proc.new { instance_eval &method_name }
+        @rules << Proc.new { instance_eval(&method_name) }
       end
     end
   end
